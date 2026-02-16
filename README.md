@@ -27,7 +27,7 @@ docker run --rm \
 ```
 
 - Após finalizado processamento, execute o comando `./sail up -d`
-- Rode as migrate `./vendor/bin/sail migrate --seed`
+- Rode as migrate `./vendor/bin/sail migrate --seed` | A base já sera populada com as informações para termos uma dashboard com um visual completo
 - Instale as dependencias: `npm install`
 - Rode o projeto: `npm run dev` (abrira em http://localhost)
 - Rode os teste: `./vendor/bin/sail pest`
@@ -38,7 +38,7 @@ Foi entregue tudo o que foi solicitado, incluindo melhorias e implementações e
 
 1. **Autenticação Completa**
    * Cadastro (Aluno)
-   * Login Único com suporte a 2FA (opcional)
+   * Login Único com suporte a 2FA (opcional) | se rodar a migrate com aseed terá um usuario padrão (e-mail: jubilut@gmail.com, senha: passwor)
    * Recuperação e Reset de Senha
 
 2. **Ambiente do Administrador**
