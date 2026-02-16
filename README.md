@@ -1,63 +1,48 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Instalando o projeto
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+O projeto se utiliza de contêineres Docker, através do pacote _Laravel Sail_ para facilitar a configuração do ambiente de desenvolvimento. Portanto, é necessário que já possua o Docker e o Docker Compose instalados na máquina.
 
-## About Laravel
+Você é livre para rodar o projeto em ambiente local mas esse texto não tratará essa situação.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Links para instalação e configuração de Docker:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Windows](https://docs.docker.com/docker-for-windows/install/)
+- [Linux (Debian based)](https://docs.docker.com/engine/install/ubuntu/)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Passos para o rodar o projeto localmente:
 
-## Learning Laravel
+- Faça um clone do projeto para sua máquina local
+- Crie um arquivo `.env`, recomendamos usar `.env-example` como base | cp .env.example .env
+- Adicione ou altere as chaves conforme sua necessidade
+- acesse a pasta do projeto via console (terminal/PowerShell/CMD)
+- execute o comando:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```shell
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Após finalizado processamento, execute o comando `./sail up -d`
+- Rode as migrate `./vendor/bin/sail migrate --seed`
+- Instale as dependencias: `npm install`
+- Rode o projeto: `npm run dev` (abrira em http://localhost)
+- Rode os teste: `./vendor/bin/sail pest`
 
-## Laravel Sponsors
+# Teste prático - Programador(a) PHP – Laravel
+- Foi feito tudo que foi pedido com pequenas diferenças
+  1) Autenticaçõa completa: Cadastro (Aluno), Login Unico (2FA opcional), Esqueceu a Senha e Reset de Senha
+  2) Ambiente Admin
+     2.1) Cadastro de Disciplinas
+     2.2) Cadastro de Currsos
+     2.3) Cadastro de Usuário (Tela Unica e no cadastro a opção de o usuario é: Aluno, Professor ou Administrador)
+     2.4) Gestão de Matriculas
+     2.5) Edição de dados do perfil
+     2.6) Dashoard com informações relevantes
+  3) Ambiente do Aluno
+     3.1) Editar os dados do perfil
+     3.2) Dashboard simples com algumas informações
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# BotCenter
-# BaseInertia
-# BaseInertia
-# teste-dev
