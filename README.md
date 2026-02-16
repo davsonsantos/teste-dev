@@ -50,7 +50,7 @@ Foi entregue tudo o que foi solicitado, incluindo melhorias e implementações e
    6. Dashboard administrativo com métricas e gráficos relevantes
 
 3. **Ambiente do Aluno**
-   1. Edição de dados do perfil
+   1. Edição de dados do perfil (Avatar, Informações e Segurança)
    2. Dashboard focada no estudante, com progresso de cursos e conquistas
   
 
