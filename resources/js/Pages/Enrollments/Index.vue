@@ -20,6 +20,7 @@ import ConfirmationModal from "@/Components/Global/ConfirmationModal.vue";
 import ResourceTable from "@/Components/Global/ResourceTable.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import EnrollmentModal from "./Partials/EnrollmentModal.vue";
+import EnrollmentShow from "./Partials/EnrollmentShow.vue";
 
 defineOptions({ layout: AppLayout });
 
@@ -39,6 +40,8 @@ const confirmModal = ref({
     message: "",
     action: null,
 });
+const isShowModalOpen = ref(false);
+const viewingEnrollment = ref(null);
 
 const openDeleteConfirm = (enrollment) => {
     confirmModal.value = {
@@ -193,7 +196,7 @@ const handleSort = (field) => {
                     </td>
                     <td class="p-4 text-sm">
                         <Badge
-                            :type="getStatusType(item.status)"
+                            :variant="getStatusType(item.status)"
                             class="uppercase font-bold text-[10px]"
                         >
                             {{ item.status }}
@@ -205,6 +208,10 @@ const handleSort = (field) => {
                     <td class="p-4 text-right">
                         <div class="flex justify-end gap-2">
                             <button
+                                @click="
+                                    viewingEnrollment = item;
+                                    isShowModalOpen = true;
+                                "
                                 class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                                 title="Visualizar Detalhes"
                             >
@@ -245,6 +252,12 @@ const handleSort = (field) => {
             v-bind="confirmModal"
             @close="confirmModal.show = false"
             @confirm="confirmModal.action()"
+        />
+
+        <EnrollmentShow
+            :show="isShowModalOpen"
+            :enrollment="viewingEnrollment"
+            @close="isShowModalOpen = false"
         />
     </div>
 </template>
