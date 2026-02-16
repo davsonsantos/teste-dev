@@ -15,7 +15,6 @@ class LoginController extends Controller
 {
     public function create()
     {
-        // O Inertia procura em resources/js/Pages/Auth/Login.vue
         return Inertia::render('Auth/Login');
     }
 
@@ -26,7 +25,6 @@ class LoginController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        // 1. Tenta validar as credenciais sem logar de fato ainda
         if (!Auth::validate($credentials)) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
@@ -35,26 +33,21 @@ class LoginController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
-        // 2. Verifica se o 2FA está ativo
         if ($user->enable_2fa) {
-            // Gera código de 6 dígitos e expiração (15 min)
             $code = rand(100000, 999999);
             $user->update([
                 'two_factor_code' => $code,
                 'two_factor_expires_at' => now()->addMinutes(10),
             ]);
 
-            // Armazena ID na sessão para o próximo passo
             $request->session()->put('auth.2fa.id', $user->id);
             $request->session()->put('auth.2fa.remember', $request->boolean('remember'));
 
-            // Envia o e-mail (Idealmente via Queue/Job)
             Mail::to($user->email)->send(new TwoFactorCodeNotification($user->name, $code));
 
             return redirect()->route('two-factor');
         }
 
-        // 3. Login normal se 2FA estiver desligado
         Auth::login($user, $request->boolean('remember'));
         $user = Auth::user();
         $request->session()->regenerate();
@@ -87,7 +80,6 @@ class LoginController extends Controller
             ]);
         }
 
-        // Limpa o código e autentica
         $user->update(['two_factor_code' => null, 'two_factor_expires_at' => null]);
 
         Auth::login($user, session()->get('auth.2fa.remember'));

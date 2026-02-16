@@ -23,7 +23,6 @@ class ForgotPasswordController extends Controller
             'email.email' => 'Insira um endereço de e-mail válido.',
         ]);
 
-        // O Broker cuida da criação do token e chama o método sendPasswordResetNotification que criamos
         $status = Password::broker()->sendResetLink(
             $request->only('email')
         );

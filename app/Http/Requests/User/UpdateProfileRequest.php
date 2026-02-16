@@ -26,7 +26,6 @@ class UpdateProfileRequest extends FormRequest
             'email'    => ['required', 'email', 'max:255', 'unique:users,email,' . $this->user()->id],
             'document' => ['nullable', 'string'],
             'phone'    => ['nullable', 'string'],
-            // Campos opcionais para quando for criação
             'password'    => ['nullable', 'string', 'min:8'],
             'role'        => ['nullable', 'string'],
             'avatar_path' => ['nullable', 'string'],

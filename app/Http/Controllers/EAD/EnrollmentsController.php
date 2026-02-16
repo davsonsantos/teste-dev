@@ -67,12 +67,10 @@ class EnrollmentsController extends Controller
 
     public function update(Request $request, Enrollment $enrollment, UpsertEnrollmentAction $action)
     {
-        // Na edição, validamos apenas o status, pois bloqueamos a troca de aluno/curso no frontend
         $data = $request->validate([
             'status' => ['required', 'in:pendente,cursando,concluido,cancelado'],
         ]);
 
-        // Injetamos os IDs originais para garantir que a Action não os sobrescreva com null
         $data['user_id'] = $enrollment->user_id;
         $data['course_id'] = $enrollment->course_id;
 

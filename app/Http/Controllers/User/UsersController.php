@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Actions\User\UpsertUserAction;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
@@ -16,7 +14,6 @@ class UsersController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Definição e Validação da Ordenação (Campos permitidos para evitar SQL Injection)
         $sortField = $request->input('sort_field', 'created_at');
         $sortDirection = $request->input('sort_direction', 'desc');
 
@@ -26,7 +23,6 @@ class UsersController extends Controller
             $sortField = 'created_at';
         }
 
-        // 2. Construção da Query com Escopo de Filtros e Ordenação Dinâmica
         $users = User::query()
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
@@ -39,6 +35,9 @@ class UsersController extends Controller
             ->when($request->input('role'), function ($query, $role) {
                 $query->where('role', $role);
             })
+            ->when($request->input('trashed'), function ($query, $trashed) {
+                if ($trashed === 'true') $query->onlyTrashed();
+            })
             ->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->withQueryString();
@@ -49,9 +48,8 @@ class UsersController extends Controller
         ]);
     }
 
-    // No UsersController.php
 
-    public function store(Request $request)
+    public function store(Request $request, UpsertUserAction $action)
     {
         $data = $request->validate([
             'name'      => ['required', 'string', 'max:255'],
@@ -62,18 +60,11 @@ class UsersController extends Controller
             'password'  => ['required', Password::defaults()]
         ]);
 
-        User::create([
-            'name'       => $data['name'],
-            'email'      => $data['email'],
-            'is_active'  => $data['is_active'] ?? true,
-            'role'       => $data['role'],
-            'birth_date' => !empty($data['birth_date']) ? Carbon::parse($data['birth_date'])->format('Y-m-d') : null,
-            'password'   => Hash::make($data['password'])
-        ]);
+        $action->execute($data);
         return back()->with(['success' => 'Usuário criado!', 'display' => 'toast']);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user, UpsertUserAction $action)
     {
         $data = $request->validate([
             'name'      => ['required', 'string', 'max:255'],
@@ -84,24 +75,13 @@ class UsersController extends Controller
             'password'  => ['nullable', Password::defaults()],
         ]);
 
-        $user->update([
-            'name'      => $data['name'],
-            'email'     => $data['email'],
-            'is_active' => $data['is_active'],
-            'role'      => $data['role'],
-            'birth_date' => !empty($data['birth_date']) ? Carbon::parse($data['birth_date'])->format('Y-m-d') : null,
-        ]);
-
-        if ($request->filled('password')) {
-            $user->update(['password' => Hash::make($data['password'])]);
-        }
+        $action->execute($data, $user);
 
         return back()->with(['success' => 'Usuário atualizado!', 'display' => 'toast']);
     }
 
     public function destroy(User $user)
     {
-        // Impede que o usuário se exclua
         if ($user->id === auth()->id()) {
             return back()->with('error', 'Você não pode excluir sua própria conta.');
         }

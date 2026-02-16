@@ -7,9 +7,7 @@ use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
@@ -28,15 +26,10 @@ class ProfileController extends Controller
 
         if ($request->hasFile('avatar')) {
 
-            // Remover avatar antigo se existir
             if ($user->avatar_path) {
                 Storage::disk('public')->delete($user->avatar_path);
             }
-
-            // Salvar novo arquivo
             $path = $request->file('avatar')->store('avatars', 'public');
-
-            // Atualizar usuário
             $user->update(['avatar_path' => $path]);
         }
 
@@ -52,8 +45,6 @@ class ProfileController extends Controller
         ]);
 
         $action->execute($user, $validated);
-
-        // return back()->with('success', 'Perfil atualizado!');
         return back()->with([
             'success' => 'Informações atualizada!',
             'display' => 'toast',
@@ -65,16 +56,13 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $validated = $request->validate([
-            'current_password' => ['required', 'current_password'], // O Laravel já tem essa regra nativa!
+            'current_password' => ['required', 'current_password'], 
             'password' => ['required', 'confirmed'],
         ]);
 
-        // Verificar se a senha atual está correta
         if (!\Hash::check($validated['current_password'], $user->password)) {
             return back()->withErrors(['current_password' => 'Senha atual incorreta.']);
         }
-
-        // Atualizar a senha
         $user->update([
             'password' => Hash::make($validated['password']),
         ]);

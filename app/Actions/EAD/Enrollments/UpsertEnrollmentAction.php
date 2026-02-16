@@ -11,13 +11,10 @@ class UpsertEnrollmentAction
     {
         return DB::transaction(function () use ($data, $enrollment) {
 
-            // Regra de Negócio: Tratamento dinâmico da data de conclusão
             if (isset($data['status'])) {
                 if ($data['status'] === 'concluido') {
-                    // Se foi marcado como concluído, grava a data atual (se já não tiver uma)
                     $data['completed_at'] = $enrollment?->completed_at ?? now();
                 } else {
-                    // Se o status não for concluído (ex: revertido para pendente/cursando), limpamos a data
                     $data['completed_at'] = null;
                 }
             }

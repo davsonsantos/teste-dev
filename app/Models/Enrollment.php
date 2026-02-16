@@ -16,17 +16,11 @@ class Enrollment extends Model
         'completed_at'
     ];
 
-    /**
-     * Relacionamento com o Aluno (User)
-     */
     public function student(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * Relacionamento com o Curso
-     */
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);

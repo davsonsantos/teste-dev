@@ -6,7 +6,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import InviteUserModal from "@/Pages/Users/Partials/InviteUserModal.vue";
 import UserModal from "@/Pages/Users/Partials/UserModal.vue";
 import { router, usePage } from "@inertiajs/vue3";
-import { FwbInput, FwbSelect } from "flowbite-vue";
+import { FwbCheckbox, FwbInput, FwbSelect } from "flowbite-vue";
 import { debounce } from "lodash";
 import {
     Pencil,
@@ -16,6 +16,7 @@ import {
     Trash2,
     UserCheck,
     UserPlus,
+    UserX,
 } from "lucide-vue-next";
 import { ref, watch } from "vue";
 import Avatar from "../../Components/Global/Avatar.vue";
@@ -49,6 +50,9 @@ const confirmModal = ref({
 
 const search = ref(props.filters?.search || "");
 const status = ref(props.filters?.status || "");
+const trashed = ref(
+    props.filters?.trashed === "true" || props.filters?.trashed === true,
+);
 const sortField = ref(props.filters?.sort_field || "created_at");
 const sortDirection = ref(props.filters?.sort_direction || "desc");
 
@@ -78,6 +82,7 @@ const fetchData = () => {
             search: search.value,
             status: status.value,
             role: role.value,
+            trashed: trashed.value,
             sort_field: sortField.value,
             sort_direction: sortDirection.value,
         },
@@ -89,7 +94,7 @@ const fetchData = () => {
     );
 };
 
-watch([search, status, role], debounce(fetchData, 300));
+watch([search, status, role, trashed], debounce(fetchData, 300));
 
 const handlePageChange = (pageNumber) => {
     router.get(
@@ -98,6 +103,7 @@ const handlePageChange = (pageNumber) => {
             page: pageNumber,
             search: search.value,
             status: status.value,
+            trashed: trashed.value,
             sort_field: sortField.value,
             sort_direction: sortDirection.value,
         },
@@ -185,6 +191,7 @@ const roleMap = {
                         placeholder="Tipo De Usuário"
                     />
                 </div>
+                <fwb-checkbox v-model="trashed" label="Excluídos" />
             </template>
 
             <template #actions>
@@ -253,12 +260,17 @@ const roleMap = {
                         >
                             Excluído
                         </Badge>
+
                         <Badge
-                            v-else
+                            v-else-if="user.is_active"
                             variant="success"
-                            :icon="Object(UserCheck)"
+                            :icon="UserCheck"
                         >
                             Ativo
+                        </Badge>
+
+                        <Badge v-else variant="warning" :icon="UserX">
+                            Inativo
                         </Badge>
                     </td>
                     <td class="p-3">

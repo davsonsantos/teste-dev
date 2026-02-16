@@ -39,8 +39,4 @@ class RegisterController extends Controller
         return redirect()->route('student.dashboard');
     }
 
-    public function testeModal()
-    {
-        dd('chegou aqui');
-    }
 }

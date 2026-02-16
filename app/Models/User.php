@@ -19,12 +19,6 @@ class User extends Authenticatable implements Auditable
 
     protected $appends = ['avatar'];
 
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -64,9 +58,6 @@ class User extends Authenticatable implements Auditable
         }
     }
 
-    /**
-     * Get the user's initials
-     */
     public function initials(): string
     {
         return Str::of($this->name)

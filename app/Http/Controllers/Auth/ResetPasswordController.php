@@ -27,7 +27,6 @@ class ResetPasswordController extends Controller
             'password' => 'required|confirmed|min:8',
         ]);
 
-        // Tenta resetar a senha através do broker de senhas do Laravel
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
@@ -41,7 +40,6 @@ class ResetPasswordController extends Controller
             }
         );
 
-        // Se o reset for bem sucedido, redireciona com mensagem
         return $status === Password::PASSWORD_RESET
             ? redirect()->route('login')->with('success', __($status)) // Alterado para success
             : back()->with('error', __($status)); // Alterado para error
