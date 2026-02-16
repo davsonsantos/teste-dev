@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+/* 1. Informe ao Tailwind onde procurar as classes do Flowbite Vue */
+@source "../../node_modules/flowbite-vue/dist/**/*.js";
+@source "../../node_modules/flowbite/dist/**/*.js";
+
+/* 2. Importe o CSS base do Flowbite Vue ANTES de suas camadas personalizadas */
+@import "flowbite-vue/index.css";
+/* Source files */
+@source "../views";
+@source "../js";
+
+/* Plugins */
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite-vue";
+
+
+/* Class based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Enable hover on mobile */
+@custom-variant hover (&:hover);
+
+/* Tailkit configuration */
+@theme {
+  /* Fonts */
+   --default-font-family: "Inter";
+
+    --color-primary-50:  #fff7ed;
+    --color-primary-100: #ffedd5;
+    --color-primary-200: #fed7aa;
+    --color-primary-300: #fdba74;
+    --color-primary-400: #fb923c;
+    --color-primary-500: #f97316;
+    --color-primary-600: #ea580c;
+    --color-primary-700: #c2410c;
+    --color-primary-800: #9a3412;
+    --color-primary-900: #7c2d12;
+    --color-primary-950: #431407;
+
+  /* Spacing */
+  --spacing-8xl: 90rem;
+  --spacing-9xl: 105rem;
+  --spacing-10xl: 120rem;
+
+  /* Animations */
+  --animate-spin-slow: spin-slow 8s linear infinite;
+
+  @keyframes spin-slow {
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    /* Fallback de variáveis para componentes que não aceitam Themable perfeitamente */
+    --fwb-primary-color: #ea580c;
+    --fwb-primary-500: #f97316;
+    --fwb-primary-600: #ea580c;
+  }
+}
+
+button {
+    @apply cursor-pointer;
+}
+
+a {
+    @apply cursor-pointer;
+}
+
+@layer components {
+
+  /* Forçamos a cor em todos os links e textos internos do breadcrumb */
+  nav[aria-label="Breadcrumb"] ol li a, 
+  nav[aria-label="Breadcrumb"] ol li span {
+    @apply !text-primary-600 hover:!text-primary-500 transition-colors;
+  }
+
+  /* Ajuste específico para os SVGs (ícones e setas) */
+  nav[aria-label="Breadcrumb"] svg {
+    @apply !text-primary-300;
+  }
+  
+  /* Mantemos o último item (página atual) com uma cor mais suave se desejar */
+  nav[aria-label="Breadcrumb"] ol li:last-child span {
+    @apply !text-gray-500 dark:!text-gray-400;
+  }
+
+  input[type="text"]:focus {
+    @apply  has-[input:focus]:ring-red-500 has-[input:focus]:border-red-500;
+  }
+
+  /* Alvo: Input checkbox do Flowbite */
+  input[type="checkbox"].bg-gray-100 {
+    @apply !text-primary-600 focus:!ring-primary-500/50 border-gray-300 dark:border-gray-600 dark:bg-gray-700;
+  }
+
+  /* Ajuste para o estado 'checked' (marcado) */
+  input[type="checkbox"]:checked {
+    @apply bg-primary-600 border-primary-600 dark:!bg-primary-500 dark:!border-primary-500;
+  }
+  input[type="text"]:focus {
+    @apply !ring-offset-white dark:!ring-offset-gray-900 !ring-primary-500;
+  }
+  /* Ajuste para o estado 'checked' (marcado) */
+  input[type="checkbox"]:checked {
+    @apply bg-amber-900;
+  }
+  /* Ajuste para o anel de foco (ring) */
+  input[type="checkbox"]:focus {
+    @apply !ring-offset-white dark:!ring-offset-gray-900 !ring-primary-500;
+  }
+  /* Estilo customizado para os tooltips do Flowbite Vue */
+.group:hover span::after {
+    content: "";
+    @apply absolute top-full left-1/2 -ml-1 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700;
+  }
+
+  fwb-button{
+    @apply cursor-pointer;
+  }
+}
+
