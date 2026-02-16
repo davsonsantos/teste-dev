@@ -14,10 +14,9 @@ use App\Http\Controllers\User\InvateController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\UsersController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware('guest')->group(function () {
