@@ -33,16 +33,23 @@ docker run --rm \
 - Rode os teste: `./vendor/bin/sail pest`
 
 # Teste prático - Programador(a) PHP – Laravel
-- Foi feito tudo que foi pedido com pequenas diferenças
-  1) Autenticaçõa completa: Cadastro (Aluno), Login Unico (2FA opcional), Esqueceu a Senha e Reset de Senha
-  2) Ambiente Admin
-     2.1) Cadastro de Disciplinas
-     2.2) Cadastro de Currsos
-     2.3) Cadastro de Usuário (Tela Unica e no cadastro a opção de o usuario é: Aluno, Professor ou Administrador)
-     2.4) Gestão de Matriculas
-     2.5) Edição de dados do perfil
-     2.6) Dashoard com informações relevantes
-  3) Ambiente do Aluno
-     3.1) Editar os dados do perfil
-     3.2) Dashboard simples com algumas informações
+
+Foi entregue tudo o que foi solicitado, incluindo melhorias e implementações extras de arquitetura:
+
+1. **Autenticação Completa**
+   * Cadastro (Aluno)
+   * Login Único com suporte a 2FA (opcional)
+   * Recuperação e Reset de Senha
+
+2. **Ambiente do Administrador**
+   1. Cadastro de Disciplinas
+   2. Cadastro de Cursos
+   3. Gestão de Usuários (Tela única com atribuição de papéis: Aluno, Professor ou Administrador)
+   4. Gestão de Matrículas (Controle de status e vínculos)
+   5. Edição de dados do perfil (Avatar, Informações e Segurança)
+   6. Dashboard administrativo com métricas e gráficos relevantes
+
+3. **Ambiente do Aluno**
+   1. Edição de dados do perfil
+   2. Dashboard focada no estudante, com progresso de cursos e conquistas
 
