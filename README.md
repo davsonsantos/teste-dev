@@ -53,10 +53,4 @@ Foi entregue tudo o que foi solicitado, incluindo melhorias e implementações e
    1. Edição de dados do perfil
    2. Dashboard focada no estudante, com progresso de cursos e conquistas
   
-### Dicas de Formatação (Markdown)
-*   **Listas Ordenadas:** Use `1.`, `2.`, `3.` para listas numeradas.
-*   **Listas Não Ordenadas:** Use `*`, `-` ou `+` para marcadores.
-*   **Links:** `[Texto](URL)`.
-*   **Imagens:** `![Texto Alternativo](URL_da_Imagem)`.
-*   **Blocos de Código:** Use três crases (```) antes e depois do código para destacar
 
